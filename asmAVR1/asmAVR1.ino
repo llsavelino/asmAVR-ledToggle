@@ -7,11 +7,11 @@ extern                                      "C"
   /*\       De assembly para C/C++          \*/
 }                                             ;
 /*\ ¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨ \*/
-#define                    error noexcept(0x00)
+#define                   error noexcept(false)
 inline auto setup                 ( __empty__ ) 
 error                                   -> void            
 { 
-  Serial.               begin( 1001011000000 );
+  Serial.         begin( 0b11100011100000000 );
   start                                    ( );
   tenLed                              ( 0x0A );
   return                                      ;
@@ -45,7 +45,8 @@ noexcept(0x00) ->                decltype(0x00)
   
    if (  !(_sys_.ptrArrayfn             )    ||   
          !(* (*(_sys_.ptrArrayfn +0x00)))    ||   
-         !(* (*(_sys_.ptrArrayfn +0x01)))     )
+         !(* (*(_sys_.ptrArrayfn +0x01)))    ||
+     Serial                                   )
     {
       throw            "Problema na mémoria\n";
     }
@@ -65,7 +66,7 @@ noexcept(0x00) ->                decltype(0x00)
     Serial.                        write('\n');
     return                              -+0x01;
   } 
-  catch                                   (...) 
+  catch                                 ( ... ) 
   {
     Serial.       print("Erro desconhecido\n");
     return                              +-0x01;
