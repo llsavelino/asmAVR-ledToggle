@@ -45,6 +45,15 @@ RET                         ; [retorno tipo void].
 ;$--------------------------$
 tenLed:
 ;#¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨#
+  CPI r24, (0x00)           ; Verica se o argumento foi passado
+  BRNE checklimits          ; Se sim passa para a checagem
+  LDI r24, (0x0A)           ; Caso contrário recebe o argumento padrão
+  RJMP arg                  ; e pulamos para fluxo normal
+  checklimits:
+    CPI r24, (0x10)         ; Verifica se é maior que 16
+    BRLO arg                ; Se sim segue o fluxo normal
+    LDI r24, (0x0F)         ; Caso contrário recebe 15 e fluxo segue normamente
+  arg:
     MOV r18, r24            ; Argumento guardado em r24 registrador especial que pode receber args no AVR.
   ;#........................#
   LDI r16, (0x00)           ;
