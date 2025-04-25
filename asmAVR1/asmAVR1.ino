@@ -1,4 +1,3 @@
-#define                          __empty__ void
 extern                                      "C"
 { 
   void      start                    (  void );            
@@ -8,7 +7,7 @@ extern                                      "C"
 }                                             ;
 /*\ ¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨ \*/
 #define        error(yesOrno) noexcept(yesOrno)
-inline auto setup                 ( __empty__ ) 
+inline auto setup                    (  void  ) 
 error(flase)                            -> void            
 { 
   Serial.         begin( 0b11100011100000000 );
@@ -18,7 +17,7 @@ error(flase)                            -> void
 }
 signed char                  sta{ 0b00000000 };
 #define value(_o_) (*(bool*)(void* const)& _o_) 
-inline auto loop                  ( __empty__ ) 
+inline auto loop                     (  void  ) 
 error(false)                            -> void     
 { 
   led        (  +(value                (sta)));   
