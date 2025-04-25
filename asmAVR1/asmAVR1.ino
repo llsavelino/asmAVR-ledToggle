@@ -7,9 +7,9 @@ extern                                      "C"
   /*\       De assembly para C/C++          \*/
 }                                             ;
 /*\ ¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨ \*/
-#define                   error noexcept(false)
+#define        error(yesOrno) noexcept(yesOrno)
 inline auto setup                 ( __empty__ ) 
-error                                   -> void            
+error(flase)                            -> void            
 { 
   Serial.         begin( 0b11100011100000000 );
   start                                    ( );
@@ -19,14 +19,14 @@ error                                   -> void
 signed char                  sta{ 0b00000000 };
 #define value(_o_) (*(bool*)(void* const)& _o_) 
 inline auto loop                  ( __empty__ ) 
-error                                   -> void     
+error(false)                            -> void     
 { 
   led        (  +(value                (sta)));   
   led        (  !(value                (sta))); 
 }
 /*\ ><><><><><><><><><><>=<><><><><><><><>< \*/
 auto main         (int argc, const char** argv) 
-noexcept(0x00) ->                decltype(0x00)
+error(false) ->                  decltype(0x00)
 {
   try
   {
@@ -54,7 +54,7 @@ noexcept(0x00) ->                decltype(0x00)
     {
       (* (_sys_.ptrArrayfn))      [ 0x00 ](  );
     }
-Serial.end(  );
+    Serial.                            end(  );
     __infiniteCycle__:
     {
       (* (_sys_.ptrArrayfn))      [ 0x01 ](  );
