@@ -15,7 +15,7 @@ error(flase)                            -> void
   tenLed                              ( 0x0A );
   return                                      ;
 }
-signed char                  sta{ 0b00000000 };
+register signed char         sta{ 0b00000000 };
 #define value(_o_) (*(bool*)(void* const)& _o_) 
 inline auto loop                     (  void  ) 
 error(false)                            -> void     
