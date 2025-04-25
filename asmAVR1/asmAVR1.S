@@ -21,8 +21,18 @@
 start:
 ;.,.,.,.,.,.,.,.,.,.,.,.,.,.,
   LDI r18, (0x80)           ; pino 13.
-    OUT DDRB, r18           ; [set Bit]: colacamos OUTPUT em reg DDRB.
-  EOR r18, r18              ; Zeramos r18 com xor -> opicional.
+  OUT DDRB, r18             ; [set Bit]: colacamos OUTPUT em reg DDRB.
+  ; Válidação...
+  check_hardware:
+  IN r19, DDRB              ; Leitura de saída, não estado DDRB != PINB
+  ANDI r19, (0x80)          ; garante o sétimo bit r19 &= 0x80
+  AND r18, r19              ; == ( r18 &= r19 ) isola o bit 7 para check
+  CPSE r18, r19             ; Caso iguais SBI é ignorado
+  ;__________________________
+    SBI DDRB, (0x05)        ;
+  ;¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨
+  bitsafe:
+    EOR r18, r18            ; Zeramos r18 com xor -> opicional.
     OUT PORTB, r18          ; Inicializa reg PORTB -> opicinal.
   NOP                       ; No operation -> opicional.
 RET                         ; [retorno tipo void]
@@ -54,7 +64,7 @@ tenLed:
     BRLO arg                ; Se sim segue o fluxo normal
     LDI r24, (0x0F)         ; Caso contrário recebe 15 e fluxo segue normamente
   arg:
-    MOV r18, r24            ; Argumento guardado em r24 registrador especial que pode receber args no AVR.
+  MOV r18, r24              ; Argumento guardado em r24 registrador especial que pode receber args no AVR.
   ;#........................#
   LDI r16, (0x00)           ;
     MOV r20, r16            ; movemos 0 para r20.
