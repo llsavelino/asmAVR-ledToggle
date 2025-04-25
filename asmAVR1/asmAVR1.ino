@@ -70,7 +70,7 @@ error(false) ->                  decltype(0x00)
   catch                                 ( ... ) 
   {
     Serial.       print("Erro desconhecido\n");
-    return                              +-0x01;
+    return                              ~~0x01;
   }
   return                                  0x00;
 };
