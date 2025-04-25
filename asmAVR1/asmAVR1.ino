@@ -54,6 +54,7 @@ noexcept(0x00) ->                decltype(0x00)
     {
       (* (_sys_.ptrArrayfn))      [ 0x00 ](  );
     }
+Serial.end(  );
     __infiniteCycle__:
     {
       (* (_sys_.ptrArrayfn))      [ 0x01 ](  );
