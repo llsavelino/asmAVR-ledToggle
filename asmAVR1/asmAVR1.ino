@@ -71,5 +71,7 @@ error(false) ->                  decltype(0x00)
     Serial.       print("Erro desconhecido\n");
     return                              ~~0x01;
   }
+  #undef                                  value
+  #undef                                  error
   return                                  0x00;
 };
