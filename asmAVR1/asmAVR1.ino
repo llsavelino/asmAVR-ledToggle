@@ -8,7 +8,7 @@ extern                                      "C"
 /*\ ¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨ \*/
 #define        error(yesOrno) noexcept(yesOrno)
 inline auto setup                    (  void  ) 
-error(flase)                            -> void            
+error(false)                            -> void            
 { 
   Serial.         begin( 0b11100011100000000 );
   start                                    ( );
@@ -16,14 +16,13 @@ error(flase)                            -> void
   return                                      ;
 }
 register signed char         sta{ 0b00000000 };
-#define value(_o_) (*(bool*)(void* const)& _o_) 
+#define value(i, ty, adrs)     (*(ty)(adrs) &i) 
 inline auto loop                     (  void  ) 
 error(false)                            -> void     
 { 
-  led        (  +(value                (sta)));   
-  led        (  !(value                (sta))); 
+    led        (  +(value(sta, bool*, void*)));   
+    led        (  !(value(sta, bool*, void*)));
 }
-/*\ ><><><><><><><><><><>=<><><><><><><><>< \*/
 auto main         (int argc, const char** argv) 
 error(false) ->                  decltype(0x00)
 {
@@ -44,8 +43,7 @@ error(false) ->                  decltype(0x00)
   
    if (  !(_sys_.ptrArrayfn             )    ||   
          !(* (*(_sys_.ptrArrayfn +0x00)))    ||   
-         !(* (*(_sys_.ptrArrayfn +0x01)))    ||
-     Serial                                   )
+         !(* (*(_sys_.ptrArrayfn +0x01)))     )
     {
       throw            "Problema na mémoria\n";
     }
@@ -58,6 +56,13 @@ error(false) ->                  decltype(0x00)
     {
       (* (_sys_.ptrArrayfn))      [ 0x01 ](  );
     } goto                   __infiniteCycle__;
+    #undef                                value
+    #undef                                error
+    #ifndef                               error
+      goto                                 end;
+    #else
+      return                            +-0x01;
+    #endif
   } 
   catch                  (const char* msgError) 
   {
@@ -71,7 +76,5 @@ error(false) ->                  decltype(0x00)
     Serial.       print("Erro desconhecido\n");
     return                              ~~0x01;
   }
-  #undef                                  value
-  #undef                                  error
-  return                                  0x00;
+  end: return                             0x00;
 };
