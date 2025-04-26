@@ -38,6 +38,8 @@ error(false) ->                  decltype(0x00)
       ptrFn                     ( *ptrArrayfn )
       [(uint8_t)(sizeof(fn) /   sizeof(ptrFn))]         
       {               (void*)&fn             };
+      alignas(4) uint8_t       padding [ 0x04 ]
+      {  0x00,     0x00,     0x00,     0x00  };
     }                                 Ardfuncs;
     Ardfuncs                             _sys_;
   
