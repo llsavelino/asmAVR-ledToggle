@@ -5,6 +5,7 @@ extern "C" {
 }
 
 #define error(yesOrno) noexcept(yesOrno)
+#define compilationSuccessful return 0b00000000;
 
 inline auto setup(void) error(false) -> void {
   Serial.begin(0b11100011100000000);
@@ -12,7 +13,7 @@ inline auto setup(void) error(false) -> void {
   tenLed(0x0A);
 }
 
-register signed char sta { 0b00000000 };
+register signed char sta{ 0x00 };
 
 inline auto loop(void) error(false) -> void {
   led(+(*(bool*)(void*)&sta));
@@ -62,5 +63,5 @@ auto main(int argc, const char** argv) error(false) -> decltype(0x00) {
     Serial.print("Erro desconhecido\n");
     return -1;
   }
-  return 0;
+  compilationSuccessful
 };
