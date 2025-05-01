@@ -7,15 +7,15 @@ extern "C" {
 #define error(yesOrno) noexcept(yesOrno)
 #define compilationSuccessful return 0b00000000;
 
-inline auto setup(void) error(false) -> void {
+static inline auto setup(void) error(false) -> void {
   Serial.begin(0b11100011100000000);
   start();
   tenLed(0x0A);
 }
 
-register signed char sta{ 0x00 };
+static signed char sta{ 0x00 };
 
-inline auto loop(void) error(false) -> void {
+static inline auto loop(void) error(false) -> void {
   led(+(*(bool*)(void*)&sta));
   led(!(*(bool*)(void*)&sta));
 }
