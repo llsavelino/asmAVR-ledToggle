@@ -17,7 +17,6 @@
 .global                 led ; | <- pode ser chamado pela linguamgem C ou C++ por ser global.
 .global               tenLed; | <- pode ser chamado pela linguamgem C ou C++ por ser global.
 ;............................
-;<><><><><><>:::><><><><><><>
 start:
 ;.,.,.,.,.,.,.,.,.,.,.,.,.,.,
   LDI r18, (0x80)           ; pino 13.
@@ -35,7 +34,7 @@ start:
     EOR r18, r18            ; Zeramos r18 com xor -> opicional.
     OUT PORTB, r18          ; Inicializa reg PORTB -> opicinal.
   NOP                       ; No operation -> opicional.
-RET                         ; [retorno tipo void]
+  RET                       ; [retorno tipo void]
 ;............................
 led:                        ; # label recebe argumento do tipo int.
 ;.,.,.,.,.,.,.,.,.,.,.,.,.,.,
@@ -49,6 +48,8 @@ led_off:                    ; # aux label
 ;.,.,.,.,.,.,.,.,.,.,.,.,.,.,
   CBI PORTB, (0x05)         ; Apaga o led.
   RCALL myDelay             ; Solicitação de delay.
+  SBIS PINB, (0x05)         ;
+  CBI PORTB, (0X05)         ;
 RET                         ; [retorno tipo void].
 ;$--------------------------$
 .equ delayValue, (0xCAFE)   ; Diretiva constante para [milisegundos]: ( ? ) Será usada na etiqueta delay.
@@ -69,14 +70,17 @@ tenLed:
   LDI r16, (0x00)           ;
     MOV r20, r16            ; movemos 0 para r20.
   ;%"'"'"'"'"'"'"'"'"'"'"''"%
-  CBI PORTB, (0x05)         ; Começa desligado.
+  clearPorts:
+  OUT PORTB, r20            ; Começa desligado.
+  SBIC PINB, (0x05)         ;
+  RCALL clearPorts          ;
   ;%"'"'"'"'"'"'"'"'"'"'"''"%
   placing:
   ; Etiqueta auxiliar...
   ;$~~::---------------::~~~$
     INC r20                 ; Incrementamos r20 até X.
     ;""""""""""""""""""""""""
-      CP r20, r18           ; Caso r20 for igual ao argumento passamos para próxima etiqueta.
+    CP r20, r18             ; Caso r20 for igual ao argumento passamos para próxima etiqueta.
     ;""""""""""""""""""""""""
     BRLO placing            ; Caso iguais ignoramos essa intrução.
   ;$~~::---------------::~~~$
@@ -124,5 +128,6 @@ myDelay:                    ; # aux label
     NOP                     ; No operation.
   ;==========================
   BRNE outerloop            ; Se valor for diferente de 0 chama a etiqueta externa.
+  RET                       ;
 ;____________________________
 ;°º*°º*°º*°º*°º*°º*°º*°º*°º*°
