@@ -6,7 +6,7 @@ static inline auto setup(void)        noexcept(false) -> void
 static inline auto loop(void)                noexcept(false) -> void 
 { led(+(*(bool*)(void*)&sta)); /*  */ led(!(*(bool*)(void*)&sta)); }
 
-alignas(0x08) typedef struct __attribute__((aligned(0x08))) { unsigned long: 0x00; 
+alignas(0x08) typedef struct __attribute__((aligned(0x08))) { unsigned long: 0b00000000; 
   union alignas(0x08) __attribute__((aligned(0x08))) {
     alignas(sizeof(ptrFn)) ptrFn fn[0x02] __attribute__((aligned(sizeof(ptrFn)))){ &setup, &loop }; 
   };
