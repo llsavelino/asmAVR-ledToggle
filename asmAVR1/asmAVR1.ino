@@ -1,5 +1,5 @@
 extern "C" { void start(void); void led(bool); void tenLed(uint8_t); }
-using ptrFn = void(*)(void); static signed char sta{ 0x00 };
+using ptrFn = void(*)(void); alignas(0x04) static signed char sta{ 0x00 };
 
 static inline auto setup(void)        noexcept(false) -> void 
 { Serial.begin(0b11100011100000000); start(); tenLed(0x0A); }
