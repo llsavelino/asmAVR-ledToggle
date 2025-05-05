@@ -101,7 +101,9 @@ tenLed:
   ;''''''''''''''''''''''''''
   NOP                       ; Nada.
   NOP                       ; Nada.
-RJMP led_off                ; jump off.
+  SBIS PINB, (0x05)         ;
+  CBI PORTB, (0x05)         ;
+  RET                       ; jump off.
 ;+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 myDelay:                    ; # aux label
 ;____________________________
