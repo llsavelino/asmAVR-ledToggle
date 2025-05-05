@@ -21,36 +21,37 @@ start:
 ;.,.,.,.,.,.,.,.,.,.,.,.,.,.,
   LDI r18, (0x80)           ; pino 13.
   OUT DDRB, r18             ; [set Bit]: colacamos OUTPUT em reg DDRB.
-  ; Válidação...
+  ;                            Válidação...
   check_hardware:
   IN r19, DDRB              ; Leitura de saída, não estado DDRB != PINB
   ANDI r19, (0x80)          ; garante o sétimo bit r19 &= 0x80
   AND r18, r19              ; == ( r18 &= r19 ) isola o bit 7 para check
   CPSE r18, r19             ; Caso iguais SBI é ignorado
   ;__________________________
-    SBI DDRB, (0x05)        ;
+  SBI DDRB, (0x05)          ;
   ;¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨
   bitsafe:
-    EOR r18, r18            ; Zeramos r18 com xor -> opicional.
-    OUT PORTB, r18          ; Inicializa reg PORTB -> opicinal.
+  EOR r18, r18              ; Zeramos r18 com xor -> opicional.
+  OUT PORTB, r18            ; Inicializa reg PORTB -> opicinal.
   NOP                       ; No operation -> opicional.
   RET                       ; [retorno tipo void]
 ;............................
 led:                        ; # label recebe argumento do tipo int.
 ;.,.,.,.,.,.,.,.,.,.,.,.,.,.,
   CPI r24, (0x00)           ; [Compare with Immediate]: compararemos valor de r24 com (0).
-  BREQ led_off              ; Caso os valores for iguais linha ignorada. 
+  BREQ led_off              ; Caso os valores for iguais linha executada.
+  SBIC PINB, (0x05)         ; Verifica se o bit está limpo
   SBI PORTB, (0x05)         ; Acende o led.
   RCALL myDelay             ; Solicitação de delay.
-RET                         ; [retorno tipo void]
+  RET                       ; [retorno tipo void]
 ;............................
 led_off:                    ; # aux label
 ;.,.,.,.,.,.,.,.,.,.,.,.,.,.,
   CBI PORTB, (0x05)         ; Apaga o led.
   RCALL myDelay             ; Solicitação de delay.
-  SBIS PINB, (0x05)         ;
-  CBI PORTB, (0X05)         ;
-RET                         ; [retorno tipo void].
+  SBIS PINB, (0x05)         ; Verifica se o bit está alto
+  CBI PORTB, (0X05)         ; Caso esteja limpa novamente
+  RET                       ; [retorno tipo void].
 ;$--------------------------$
 .equ delayValue, (0xCAFE)   ; Diretiva constante para [milisegundos]: ( ? ) Será usada na etiqueta delay.
 ;$--------------------------$
@@ -61,14 +62,14 @@ tenLed:
   LDI r24, (0x0A)           ; Caso contrário recebe o argumento padrão
   RJMP arg                  ; e pulamos para fluxo normal
   checklimits:
-    CPI r24, (0x10)         ; Verifica se é maior que 16
-    BRLO arg                ; Se sim segue o fluxo normal
-    LDI r24, (0x0F)         ; Caso contrário recebe 15 e fluxo segue normamente
+  CPI r24, (0x10)           ; Verifica se é maior que 16
+  BRLO arg                  ; Se sim segue o fluxo normal
+  LDI r24, (0x0F)           ; Caso contrário recebe 15 e fluxo segue normamente
   arg:
-  MOV r18, r24              ; Argumento guardado em r24 registrador especial que pode receber args no AVR.
+  MOV r18, r24              ; Argumento movido á r24 registrador especial que pode receber args no AVR.
   ;#........................#
   LDI r16, (0x00)           ;
-    MOV r20, r16            ; movemos 0 para r20.
+  MOV r20, r16              ; movemos 0 para r20.
   ;%"'"'"'"'"'"'"'"'"'"'"''"%
   clearPorts:
   OUT PORTB, r20            ; Começa desligado.
@@ -76,25 +77,23 @@ tenLed:
   RCALL clearPorts          ;
   ;%"'"'"'"'"'"'"'"'"'"'"''"%
   placing:
-  ; Etiqueta auxiliar...
   ;$~~::---------------::~~~$
-    INC r20                 ; Incrementamos r20 até X.
+  INC r20                   ; Incrementamos r20 até X.
     ;""""""""""""""""""""""""
-    CP r20, r18             ; Caso r20 for igual ao argumento passamos para próxima etiqueta.
+  CP r20, r18               ; Caso r20 for igual ao argumento passamos para próxima etiqueta.
     ;""""""""""""""""""""""""
-    BRLO placing            ; Caso iguais ignoramos essa intrução.
+  BRLO placing              ; Caso iguais ignoramos essa intrução.
   ;$~~::---------------::~~~$
-  __Again__:
-  NOP                       ;
+  __Again__: NOP            ;
   RCALL myDelay             ; Delay.
   ;'"'"'"'"'"'"'"'"'"'"'"'"'"
-    IN r16, PINB            ; Lê o estado atual dos pinos do porto B e armazena em r16.
-      LDI r17, 0x80         ; r17 recebe 0b10000000.
-      EOR r16, r17          ; Lógica xor nos regs 16 e 17.
-    OUT PORTB, r16          ; Escrevemos r16 em PORTB.
+  IN r16, PINB              ; Lê o estado atual dos pinos do porto B e armazena em r16.
+  LDI r17, 0x80             ; r17 recebe 0b10000000.
+  EOR r16, r17              ; Lógica xor nos regs 16 e 17.
+  OUT PORTB, r16            ; Escrevemos r16 em PORTB.
   ;"'"'"'"'"'"'"'"'"'"'"'"'"'
   RCALL myDelay             ; Delay.
-    SUBI r20, 0x01          ; Decrementamos rX até 0.
+  SUBI r20, 0x01            ; Decrementamos rX até 0.
   BRNE __Again__            ; Diferente de 0 repete a etiqueta.
   ;''''''''''''''''''''''''''
   ; EOR (r18), (r18)        ; Foi descartado.
@@ -110,22 +109,22 @@ myDelay:                    ; # aux label
   NOP                       ; No operation.
   ;,,,,,,,,,,,,,,,,,,,,,,,,,,
   LDI r20, (0x64)           ; [Carregamos 100 no r20]
-    MOV r21, r20            ; -> opicional.
+  MOV r21, r20              ; -> opicional.
     ;........................
-    EOR r20, r20            ; -> opicional.
+  EOR r20, r20              ; -> opicional.
   outerloop:                ; # aux label
   ;+-+-+-+-+-+-+-+-+-+-+-+-+-
-    LDI r30,lo8(delayValue) ; Parte baixa do Reg(Z) recebe 5000.
-    LDI r31,hi8(delayValue) ; Parte alta do Reg(Z) recebe 5000.
+  LDI r30,lo8(delayValue)   ; Parte baixa do Reg(Z) recebe 5000.
+  LDI r31,hi8(delayValue)   ; Parte alta do Reg(Z) recebe 5000.
   ;-+-+-+-+-+-+-+-+-+-+-+-+-+
   innerloop:                ; # aux label
   ;__________________________
-    SBIW r30, (0x01)        ;  Subtração imediata de um registrador de dois bytes: Nota importante o uso de sbiw é exclusivo de dois bytes.
-    NOP                     ; 1 ciclo sem operação.
+  SBIW r30, (0x01)          ;  Subtração imediata de um registrador de dois bytes: Nota importante o uso de sbiw é exclusivo de dois bytes.
+  NOP                       ; 1 ciclo sem operação.
   ;__________________________
   BRNE innerloop            ; Se valor for diferente de 0 chama a etiqueta interna.
-    SUBI r21, (0x01)        ; Subtração imediata de um registrador de um byte.
-    NOP                     ; No operation.
+  SUBI r21, (0x01)          ; Subtração imediata de um registrador de um byte.
+  NOP                       ; No operation.
   ;==========================
   BRNE outerloop            ; Se valor for diferente de 0 chama a etiqueta externa.
   RET                       ;
