@@ -15,7 +15,7 @@ alignas(0x08) typedef struct __attribute__((optimize("O0"), (aligned(0x08))) { u
   };
   union alignas(0x08) __attribute__((aligned(0x08))) {
       alignas(sizeof(ptrFn)) ptrFn (*ptrArrayfn)[sizeof(fn)/sizeof(ptrFn)] __attribute__((aligned(sizeof(ptrFn))))
-      { reinterpret_cast<ptrFn(*)[_y_]>(&fn) }; void* raw;
+      { reinterpret_cast<ptrFn(*)[_y_]>((void*)&fn) }; void* raw;
   };
 } Ardfuncs;
 static_assert(sizeof(Ardfuncs) <= 0x0C, "Erro: Ardfuncs deve ter menos de 16 bytes!");
