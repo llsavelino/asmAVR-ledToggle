@@ -9,7 +9,7 @@ __attribute__((noreturn))
 static inline auto loop(void)                noexcept(false) -> void 
 { led(+(*(bool*)(void*) &i)); /*  */ led(!(*(bool*)(void*) &i)); }
 
-alignas(0x08) typedef struct __attribute__((optimize("O0"), (packed), (aligned(0x08))) { unsigned long: 0b00000000; 
+alignas(0x08) typedef struct __attribute__((optimize("O0"), packed, (aligned(0x08))) { unsigned long: 0b00000000; 
   union alignas(0x08) __attribute__((aligned(0x08))) {
     alignas(sizeof(ptrFn)) ptrFn fn[_y_] __attribute__((aligned(sizeof(ptrFn)))){ &setup, &loop }; 
   };
