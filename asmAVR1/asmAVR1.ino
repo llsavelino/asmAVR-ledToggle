@@ -1,5 +1,6 @@
 #pragma GCC optimize ("O1")
 #define _y_ 0x02
+#define Brain main
 extern "C" { [[ gnu::used ]] void start(void); [[ gnu::used ]] void led(bool); [[ gnu::used ]] void tenLed(uint8_t); } 
 using ptrFn = void(*)(void); alignas(0x04) static signed char i{ 0x00 };
 
@@ -21,7 +22,7 @@ alignas(0x08) typedef struct __attribute__((optimize("O0"), (aligned(0x08))) { u
 static_assert(sizeof(Ardfuncs) <= 0x0C, "Erro: Ardfuncs deve ter menos de 16 bytes!");
 
 #pragma GCC optimize ("Os")
-[[  noreturn  ]] auto main(int argc, const char** argv) noexcept(false) -> decltype(0x00) {
+[[  noreturn  ]] auto Brain(int argc, const char** argv) noexcept(false) -> decltype(0x00) {
   try {                                   Ardfuncs _sys_;
     if (!(volatile ptrFn(*)[])_sys_.ptrArrayfn        ||
         !(volatile ptrFn)(*(*_sys_.ptrArrayfn +0x00)) ||
