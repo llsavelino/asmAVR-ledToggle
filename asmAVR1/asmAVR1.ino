@@ -7,7 +7,7 @@ using ptrFn = void(*)(void); alignas(0x04) static signed char i{ 0x00 };
 [ [ gnu::const ] ][  [gnu::always_inline]  ] static inline auto setup(void) noexcept(false) -> void 
 { Serial.begin(0x2580); start(); tenLed(0x0A); return; }
 
-__attribute__((noreturn)) [  [gnu::always_inline]  ] static inline auto loop(void) noexcept(false) -> void 
+__attribute__((noreturn, hot)) [  [gnu::always_inline]  ] static inline auto loop(void) noexcept(false) -> void 
 { led(+(*(bool*)(void*) &i)); /*  */ led(!(*(bool*)(void*) &i)); }
 
 alignas(0x08) typedef struct __attribute__((optimize("O0"), (aligned(0x08))) { unsigned long: 0b00000000; 
@@ -27,7 +27,7 @@ static_assert(sizeof(Ardfuncs) <= 0x0C, "Erro: Ardfuncs deve ter menos de 16 byt
     if (!(volatile ptrFn(*)[])_sys_.ptrArrayfn        ||
         !(volatile ptrFn)(*(*_sys_.ptrArrayfn +0x00)) ||
         !(volatile ptrFn)(*(*_sys_.ptrArrayfn +0x01))  ) 
-    [[likely]] { throw "Erro detectado: Problema na mémoria\n"; }
+    [[unlikely]] { throw "Erro detectado: Problema na mémoria\n"; }
 
     (*(_sys_.ptrArrayfn))[  0x00  ](  ); Serial.end(  );
 
