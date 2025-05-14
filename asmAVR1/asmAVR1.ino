@@ -1,13 +1,11 @@
 #pragma GCC optimize ("O1")
 #define _y_ 0x02
 #define Brain main
-extern "C" { [[ gnu::used ]] void start(void); [[ gnu::used ]] void led(bool); [[ gnu::used ]] void tenLed(uint8_t); } 
+extern "C" { [[gnu::used]] void start(void); [[gnu::used]] void led(bool); [[gnu::used]] void tenLed(uint8_t); } 
 using ptrFn = void(*)(void); alignas(0x04) static signed char i{ 0x00 };
 
-[ [ gnu::const ] ][  [gnu::always_inline]  ] static inline auto setup(void) noexcept(false) -> void 
-{ Serial.begin(0x2580); start(); tenLed(0x0A); return; }
-
-__attribute__((noreturn, hot)) [  [gnu::always_inline]  ] static inline auto loop(void) noexcept(false) -> void 
+[[gnu::const]][[gnu::always_inline]] static inline auto setup(void) noexcept(false) -> void { start(); tenLed(0x0A); return; }
+__attribute__((noreturn, hot))[[gnu::always_inline]] static inline auto loop(void) noexcept(false) -> void 
 { led(+(*(bool*)(void*) &i)); /*  */ led(!(*(bool*)(void*) &i)); }
 #ifdef _y_
   #if _y_ < 0x02 || _y_ > 0x02
@@ -30,20 +28,16 @@ static_assert(sizeof(Ardfuncs) <= 0x0C, "Erro: Ardfuncs deve ter menos de 16 byt
 #undef _y_
 #pragma GCC optimize ("Os")
 #ifdef Brain
-[[  noreturn  ]] auto Brain(int argc, const char** argv) noexcept(false) -> decltype(0x00) {
-  try {                                   Ardfuncs _sys_;
-    if (!(volatile ptrFn(*)[])_sys_.ptrArrayfn        ||
-        !(volatile ptrFn)(*(*_sys_.ptrArrayfn +0x00)) ||
-        !(volatile ptrFn)(*(*_sys_.ptrArrayfn +0x01))  ) 
-    [[unlikely]] { throw "Erro detectado: Problema na mémoria\n"; }
+[[noreturn]] auto Brain(int argc, const char** argv) noexcept(false) -> decltype(0x00) {
+  Ardfuncs _sys_;
+  if (!(volatile ptrFn(*)[])_sys_.ptrArrayfn        ||
+      !(volatile ptrFn)(*(*_sys_.ptrArrayfn +0x00)) ||
+      !(volatile ptrFn)(*(*_sys_.ptrArrayfn +0x01))  ) 
+  [unlikely]]                       { return -+0x01; }
 
-    (*(_sys_.ptrArrayfn))[  0x00  ](  ); Serial.end(  );
-
-    __infiniteCycle__: (*(_sys_.ptrArrayfn))[  0x01  ](  ); goto __infiniteCycle__; asm volatile ("jmp 0");
-  } 
-  catch (const char* msgError) { Serial.print(msgError); return -+0x01; } 
-  catch (...) { Serial.print("Erro desconhecido\n");     return -+0x01; }
-  return                                                    0b00000000;
+  (*(_sys_.ptrArrayfn))[  0x00  ](  ); Serial.end(  );
+  __infiniteCycle__: (*(_sys_.ptrArrayfn))[  0x01  ](  ); goto __infiniteCycle__; 
+  asm volatile ("jmp 0"); return 0b00000000;
 };
 #ifndef Brain
   #warning Escopo principal não definido...
