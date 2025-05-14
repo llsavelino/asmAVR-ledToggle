@@ -9,8 +9,11 @@ using ptrFn = void(*)(void); alignas(0x04) static signed char i{ 0x00 };
 
 __attribute__((noreturn, hot)) [  [gnu::always_inline]  ] static inline auto loop(void) noexcept(false) -> void 
 { led(+(*(bool*)(void*) &i)); /*  */ led(!(*(bool*)(void*) &i)); }
-
-alignas(0x08) typedef struct __attribute__((optimize("O0"), (aligned(0x08))) { unsigned long: 0b00000000; 
+#ifdef _y_
+  #if _y_ < 0x02 || _y_ > 0x02
+    #error Erro indíce menor inferior ao valor mínimo...
+  #elif _y_ == 0x02
+alignas(0x08) typedef struct __attribute__((optimize("O0"), (aligned(0x08))) { unsigned long: 0b00000000;
   union alignas(0x08) __attribute__((aligned(0x08))) {
     alignas(sizeof(ptrFn)) ptrFn fn[_y_] __attribute__((aligned(sizeof(ptrFn)))){ &setup, &loop }; 
   };
@@ -19,9 +22,14 @@ alignas(0x08) typedef struct __attribute__((optimize("O0"), (aligned(0x08))) { u
       { reinterpret_cast<ptrFn(*)[_y_]>((void*)&fn) }; void* raw;
   };
 } Ardfuncs;
+  #else
+    #warning Ocorreu um erro não identificado!!! Isso pode causar comportamento indefinido!!!
+  #endif
 static_assert(sizeof(Ardfuncs) <= 0x0C, "Erro: Ardfuncs deve ter menos de 16 bytes!");
-
+#endif
+#undef _y_
 #pragma GCC optimize ("Os")
+#ifdef Brain
 [[  noreturn  ]] auto Brain(int argc, const char** argv) noexcept(false) -> decltype(0x00) {
   try {                                   Ardfuncs _sys_;
     if (!(volatile ptrFn(*)[])_sys_.ptrArrayfn        ||
@@ -37,3 +45,8 @@ static_assert(sizeof(Ardfuncs) <= 0x0C, "Erro: Ardfuncs deve ter menos de 16 byt
   catch (...) { Serial.print("Erro desconhecido\n");     return -+0x01; }
   return                                                    0b00000000;
 };
+#ifndef Brain
+  #warning Escopo principal não definido...
+#else
+ #error ?
+#endif
