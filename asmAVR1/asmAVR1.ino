@@ -1,6 +1,10 @@
 #pragma GCC optimize ("O1")
 #define _y_ 0x02
 #define _x_ 0x01
+
+#include <cstdint>
+#include <cstdbool>
+
 extern "C" { [[gnu::used]] void start(void); [[gnu::used]] void led(bool); [[gnu::used]] void tenLed(uint8_t); } 
 using ptrFn = void(*)(void); alignas(0x04) static signed char i{ 0x00 };
 
