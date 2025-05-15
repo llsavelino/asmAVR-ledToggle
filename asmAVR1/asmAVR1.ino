@@ -1,7 +1,6 @@
 #pragma GCC optimize ("O1")
 #define _y_ 0x02
 #define _x_ 0x01
-#define Brain main
 extern "C" { [[gnu::used]] void start(void); [[gnu::used]] void led(bool); [[gnu::used]] void tenLed(uint8_t); } 
 using ptrFn = void(*)(void); alignas(0x04) static signed char i{ 0x00 };
 
@@ -31,8 +30,7 @@ static_assert(sizeof(Ardfuncs) <= 0x0C, "Erro: Ardfuncs deve ter menos de 16 byt
   #warning Ocorreu um erro não identificado!!! Isso pode causar comportamento indefinido!!!
 #endif
 #pragma GCC optimize ("Os")
-#ifdef Brain
-[[noreturn]] auto Brain(int argc, const char** argv) noexcept(false) -> decltype(0x00) {
+[[noreturn]] auto main(int argc, const char** argv) noexcept(false) -> decltype(0x00) {
   Ardfuncs _sys_;
   #ifndef INDEX
   #define INDEX 0x00
@@ -50,8 +48,3 @@ static_assert(sizeof(Ardfuncs) <= 0x0C, "Erro: Ardfuncs deve ter menos de 16 byt
   
   return 0b00000000;
 };
-#ifndef Brain
-  #warning Escopo principal não definido...
-#else
- #error Erro desconhecido e não catalogado...
-#endif
