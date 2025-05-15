@@ -30,20 +30,20 @@ static_assert(sizeof(Ardfuncs) <= 0x0C, "Erro: Ardfuncs deve ter menos de 16 byt
 #else
   #warning Ocorreu um erro não identificado!!! Isso pode causar comportamento indefinido!!!
 #endif
-#undef _y_
-#undef _x_
 #pragma GCC optimize ("Os")
 #ifdef Brain
 [[noreturn]] auto Brain(int argc, const char** argv) noexcept(false) -> decltype(0x00) {
   Ardfuncs _sys_;
   #ifndef INDEX
   #define INDEX 0x00
-  if (!(volatile ptrFn(*)[][])_sys_.ptrArrayfn                                 ||
+  if (!(volatile ptrFn(*)[_y_][_x_])_sys_.ptrArrayfn                           ||
       !(volatile ptrFn)(*((&((*_sys_.ptrArrayfn)[INDEX][INDEX]) +0x00) +0x00)) ||
       !(volatile ptrFn)(*((&((*_sys_.ptrArrayfn)[INDEX][INDEX]) +0x01) +0x00))  ) 
   [unlikely]]                                                  { return -+0x01; }
   #endif
   #undef INDEX
+  #undef _y_
+  #undef _x_
     
   (*(_sys_.ptrArrayfn))[  0x00  ][  0x00  ](  );  Serial.end(  );
   while (true) { (*(_sys_.ptrArrayfn))[  0x01  ][  0x00  ](  ); } 
