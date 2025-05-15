@@ -13,7 +13,7 @@ __attribute__((noreturn, hot))[[gnu::always_inline]] static inline auto loop(voi
   #if _y_ < 0x02 || _y_ > 0x02 && _x_ < 0x01 || _x_ > 0x01
     #error Erro indíce menor inferior ao valor mínimo...
   #elif _y_ == 0x02 && _x_ == 0x01
-alignas(0x08) typedef struct { 
+alignas(0x08) typedef struct alignas(0x08) { 
 
   unsigned long: 0b00000000;
 
