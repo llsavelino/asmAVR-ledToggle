@@ -41,7 +41,7 @@ static_assert(sizeof(Ardfuncs) <= 0x0C, "Erro: Ardfuncs deve ter menos de 16 byt
   if (!(volatile ptrFn(*)[][])_sys_.ptrArrayfn                                 ||
       !(volatile ptrFn)(*((&((*_sys_.ptrArrayfn)[INDEX][INDEX]) +0x00) +0x00)) ||
       !(volatile ptrFn)(*((&((*_sys_.ptrArrayfn)[INDEX][INDEX]) +0x01) +0x00))  ) 
-  [unlikely]]                                        { return -+0x01; }
+  [unlikely]]                                                  { return -+0x01; }
   #endif
   #undef INDEX
     
