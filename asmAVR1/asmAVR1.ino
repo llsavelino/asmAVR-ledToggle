@@ -5,10 +5,9 @@
 extern "C" { [[gnu::used]] void start(void); [[gnu::used]] void led(bool); [[gnu::used]] void tenLed(uint8_t); } 
 using ptrFn = void(*)(void); alignas(0x04) static signed char i{ 0x00 };
 
-[[gnu::const]][[gnu::always_inline]] static inline auto setup(void) noexcept(false) 
-->                                          void { start(); tenLed(0x0A); return; }
-__attribute__((noreturn, hot))[[gnu::always_inline]] static inline auto loop(void) noexcept(false)
-->                         void { led(+(*(bool*)(void*) &i)); /*  */ led(!(*(bool*)(void*) &i)); }
+[[gnu::const]][[gnu::always_inline]] static inline auto setup(void) noexcept(false) -> void { start(); tenLed(0x0A); return; }
+__attribute__((noreturn, hot))[[gnu::always_inline]] static inline auto loop(void) noexcept(false) -> void 
+{ led(+(*(bool*)(void*) &i)); /*  */ led(!(*(bool*)(void*) &i)); }
 
 #if defined(_y_) && defined(_x_)
   #if _y_ < 0x02 || _y_ > 0x02 && _x_ < 0x01 || _x_ > 0x01
@@ -16,12 +15,12 @@ __attribute__((noreturn, hot))[[gnu::always_inline]] static inline auto loop(voi
   #elif _y_ == 0x02 && _x_ == 0x01
 alignas(0x08) typedef struct { 
   unsigned long: 0b00000000;
-  union alignas(0x08) { ptrFn fn[_y_][_x_]{ &setup, &loop }; } Box;
   union alignas(0x08) {
-      ptrFn(*ptrArrayfn)[sizeof(fn)/sizeof(ptrFn)][sizeof(fn)/sizeof(fn)] 
-      { reinterpret_cast<ptrFn(*)[_y_][_x_]>(&Box.fn) }; 
-      void* raw;
-  };
+    ptrFn fn[_y_][_x_]{ &setup, &loop };
+    uint8_t memorycache[sizeof(fn)];
+    void* raw;
+  } Box;
+  ptrFn(*ptrArrayfn)[_y_][_x_]{ reinterpret_cast<ptrFn(*)[_y_][_x_]>(&Box.fn) }; 
 } Ardfuncs;
   #else
     #warning Ocorreu um erro não identificado!!! Isso pode causar comportamento indefinido!!!
