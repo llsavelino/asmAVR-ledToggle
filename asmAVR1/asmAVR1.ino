@@ -14,13 +14,16 @@ __attribute__((noreturn, hot))[[gnu::always_inline]] static inline auto loop(voi
     #error Erro indíce menor inferior ao valor mínimo...
   #elif _y_ == 0x02 && _x_ == 0x01
 alignas(0x08) typedef struct { 
+
   unsigned long: 0b00000000;
+
   union alignas(0x08) {
     ptrFn fn[_y_][_x_]{ &setup, &loop };
-    uint8_t memorycache[sizeof(fn)];
-    void* raw;
+    uint8_t memorycache[sizeof(fn)]; void* raw;
   } Box;
-  ptrFn(*ptrArrayfn)[_y_][_x_]{ reinterpret_cast<ptrFn(*)[_y_][_x_]>(&Box.fn) }; 
+  
+  ptrFn(*ptrArrayfn)[_y_][_x_]{ reinterpret_cast<ptrFn(*)[_y_][_x_]>(&Box.fn) };
+
 } Ardfuncs;
   #else
     #warning Ocorreu um erro não identificado!!! Isso pode causar comportamento indefinido!!!
