@@ -50,6 +50,8 @@ auto main(int argc, const char** argv) noexcept(false) -> decltype(0x00) {
   #endif
   #ifdef SYSTEM_AVR
   (*(_sys_.ptrArrayfn))[0x00][0x00](  ); while (+true) { (*(_sys_.ptrArrayfn))[0x01][0x00](  ); } 
+  #else
+    #error Erro sistema de controle não definido!!!
   #endif
   return (0x01) ? 0x00: -+0x01;
 };
