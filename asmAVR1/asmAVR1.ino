@@ -2,17 +2,16 @@
 #define _y_ 0x02
 #define _x_ 0x01
 #define SYSTEM_AVR
-extern "C" { void start(void); void led(bool); void tenLed(uint8_t); } 
-
+extern  "C" { void start(void); void led(bool); void tenLed(uint8_t); };
 using ptrFn = void(*)(void); alignas(0x04) static signed char i{ 0x00 };
 
 static inline auto setup(void) noexcept(false) -> void 
-{ start(  ); tenLed(0x0A);                   return; }
+{ start(  ); tenLed(0x0A);                  return; };
 static inline auto loop(void) noexcept(false) ->  void 
 { 
   led                         (+(*(bool*)(void*) &i)); 
   led                         (!(*(bool*)(void*) &i)); 
-}
+};
 
 #if defined(_y_) && defined(_x_)
   #if _y_ < 0x02 || _y_ > 0x02 && _x_ < 0x01 || _x_ > 0x01
@@ -49,9 +48,9 @@ auto main(int argc, const char** argv) noexcept(false) -> decltype(0x00) {
   #undef                                                                      _x_
   #endif
   #ifdef SYSTEM_AVR
-  (*(_sys_.ptrArrayfn))[0x00][0x00](  ); while (+true) { (*(_sys_.ptrArrayfn))[0x01][0x00](  ); } 
+  (*(_sys_.ptrArrayfn))[0x00][0x00](  ); while (true) { (*(_sys_.ptrArrayfn))[0x01][0x00](  ); } 
   #else
     #error Erro sistema de controle não definido!!!
   #endif
-  return (0x01) ? 0x00: -+0x01;
+  return (0x01) ? -+0x00: -+0x01;
 };
