@@ -1,4 +1,4 @@
-#pragma GCC optimize ("O0")
+#pragma GCC                                              optimize("O0")
 #define _y_ 0x02
 #define _x_ 0x01
 #define SYSTEM_AVR
@@ -33,11 +33,11 @@ alignas(0x08) typedef struct alignas(0x08) {
   #endif
 #else
   #warning Ocorreu um erro não identificado!!! Isso pode causar comportamento indefinido!!!
-#endif
-#pragma GCC optimize ("Os")
+#                                                                                     endif
+#pragma GCC                                               optimize("Os")
 auto main(int argc, const char** argv) noexcept(false) -> decltype(0x00) {
   Ardfuncs _sys_;
-  #ifndef INDEX
+  #ifndef                                                                   INDEX
   #define INDEX 0x00
   if (!(volatile ptrFn(*)[_y_][_x_])_sys_.ptrArrayfn                           ||
       !(volatile ptrFn)(*((&((*_sys_.ptrArrayfn)[INDEX][INDEX]) +0x00) +0x00)) ||
@@ -46,11 +46,11 @@ auto main(int argc, const char** argv) noexcept(false) -> decltype(0x00) {
   #undef                                                                    INDEX
   #undef                                                                      _y_
   #undef                                                                      _x_
-  #endif
+  #                                                                         endif
   #ifdef SYSTEM_AVR
   (*(_sys_.ptrArrayfn))[0x00][0x00](  ); while (true) { (*(_sys_.ptrArrayfn))[0x01][0x00](  ); } 
   #else
     #error Erro sistema de controle não definido!!!
-  #endif
+  #                                           endif
   return (0x01) ? -+0x00: -+0x01;
 };
