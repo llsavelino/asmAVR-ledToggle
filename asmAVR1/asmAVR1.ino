@@ -16,7 +16,7 @@ static inline auto loop(void) noexcept(false) ->  void
 #if defined(_y_) && defined(_x_)
   #if _y_ < 0x02 || _y_ > 0x02 && _x_ < 0x01 || _x_ > 0x01
     #error Erro indíce menor inferior ao valor mínimo...
-  #elif _y_ == 0x02 && _x_ == 0x01
+  #elif _y_ % _y_ == _x_
 alignas(0x08) typedef struct alignas(0x08) { 
 
   unsigned long: 0b00000000;
