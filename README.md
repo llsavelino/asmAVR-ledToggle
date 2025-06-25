@@ -1,4 +1,4 @@
-<img width=100% src=" https://capsule-render.vercel.app/api?type=waving&height=300&color=gradient&text=Library-waterPump-for-Arduino-Uno&fontSize=45"/>
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&height=300&color=gradient&text=Library-waterPump-for-Arduino-Uno&fontSize=45"/>
 
 ![Arduino](https://img.shields.io/badge/Arduino-Uno-00979D?style=flat&logo=arduino&logoColor=white)
 ![License](https://img.shields.io/github/license/llsavelino/Library-waterPump-for-Arduino-Uno?color=blue)
