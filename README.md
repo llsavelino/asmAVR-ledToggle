@@ -1,96 +1,120 @@
 
-<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&height=300&color=gradient&text=Library-waterPump-for-Arduino-Uno&fontSize=45"/>
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&height=300&color=gradient&text=asmAVR-ledToggle&fontSize=45"/>
 
-![Arduino](https://img.shields.io/badge/Arduino-Uno-00979D?style=flat&logo=arduino&logoColor=white)
-![License](https://img.shields.io/github/license/llsavelino/Library-waterPump-for-Arduino-Uno?color=blue)
+![AVR](https://img.shields.io/badge/AVR-Assembly-6E4C13?style=flat&logo=gnu&logoColor=white)
+![License](https://img.shields.io/github/license/llsavelino/asmAVR-ledToggle?color=blue)
 ![Version](https://img.shields.io/badge/version-1.0.0-orange)
-![C++](https://img.shields.io/badge/C++-17-00599C?style=flat&logo=c%2B%2B&logoColor=white)
+![Assembly](https://img.shields.io/badge/Assembly-71.8%25-blueviolet)
+![C++](https://img.shields.io/badge/C++-28.2%25-00599C?style=flat&logo=c%2B%2B&logoColor=white)
 
-Uma biblioteca Arduino para controlar bombas d'água com eficiência, oferecendo funcionalidades avançadas para gerenciamento de estado e potência.
+Um exemplo simples (e propositalmente complicado) de como piscar um LED usando Assembly no AVR, mostrando os detalhes de baixo nível do controle de hardware.
 
 ## 🔎 Visão Geral
 
-Esta biblioteca simplifica o controle de bombas d'água utilizando Arduino Uno, abstraindo operações de baixo nível e oferecendo:
+Este projeto demonstra como acionar um LED em placas baseadas em AVR (como o Arduino Uno) utilizando Assembly puro, ilustrando o funcionamento direto do hardware sem abstrações.
 
-- ✅ Controle intuitivo de liga/desliga  
-- 🎛️ Ajuste preciso de potência via PWM  
-- ➕ Operadores sobrecarregados para sintaxe intuitiva  
-- 🔧 Gerenciamento automático de pinos  
+- ✅ Controle preciso dos registradores do microcontrolador  
+- 🛠️ Exemplo didático para aprender Assembly AVR  
+- 🔬 Sem dependência de bibliotecas externas ou Arduino IDE  
+- 💡 Código comentado e organizado para estudo  
 
-```cpp
-#include "HeaderWp.hpp"
-jobBomb* minhaBomba = new jobBomb(9, LOW, 0); // Criação fácil do objeto
-````
+### 🟢 Veja em ação
+
+<p align="center">
+  <img src="https://blog.eletrogate.com/wp-content/uploads/2023/06/giphy.gif" alt="Demonstração da bomba em funcionamento" width="500"/>
+</p>
+
 
 ## 🚀 Funcionalidades Principais
 
-| Feature                     | Descrição                        | Exemplo             |
-| --------------------------- | -------------------------------- | ------------------- |
-| ⚙️ Controle de Estado       | Liga/desliga com um comando      | `swapState(true)`   |
-| 📊 Controle Analógico       | Ajuste potência de 0-255         | `analogPower(128)`  |
-| ➕ Operadores Avançados      | Sintaxe intuitiva com operadores | `*minhaBomba += 50` |
-| 🔌 Gerenciamento Automático | Configura pinos automaticamente  | -                   |
+| Feature                     | Descrição                               | Exemplo                        |
+| --------------------------- | --------------------------------------- | ------------------------------ |
+| ⚡ Controle do LED           | Liga/desliga LED via registrador        | `sbi PORTB, PB5`               |
+| ⏱️ Delay Manual             | Rotinas de atraso em Assembly           | Loop de decremento             |
+| 📝 Código Didático          | Comentários explicativos no Assembly    | `; Inicia loop de delay`       |
+| 🤓 Alternativa em C++       | Versão equivalente em C++ para estudo   | `digitalWrite(LED_BUILTIN, 1);` |
 
-## 📦 Instalação
+## 📦 Como Rodar
 
-1. **Baixe a Biblioteca**:
+1. **Clone o Repositório**:
 
    ```bash
-   git clone https://github.com/llsavelino/Library-waterPump-for-Arduino-Uno.git
+   git clone https://github.com/llsavelino/asmAVR-ledToggle.git
+   cd asmAVR-ledToggle
    ```
-2. **Instale no Arduino IDE**:
 
-   * `Sketch > Incluir Biblioteca > Adicionar Biblioteca .ZIP...`
-   * Ou copie para o diretório `libraries`
+2. **Compile o Assembly** (usando avr-gcc):
 
-![Instalação](https://img.shields.io/badge/Installation-Guide-4BC51D)
+   ```bash
+   avr-gcc -mmcu=atmega328p -nostartfiles -o led.elf led.asm
+   avr-objcopy -O ihex led.elf led.hex
+   ```
 
-## 💻 Uso Básico
+3. **Grave na Placa** (exemplo com avrdude):
 
-### 🔧 Inicialização
+   ```bash
+   avrdude -c arduino -p m328p -P /dev/ttyACM0 -b 115200 -U flash:w:led.hex
+   ```
 
-```cpp
-#include "HeaderWp.hpp"
-jobBomb* minhaBomba = new jobBomb(9, LOW); // Pino 9, desligado
+   > Ajuste o parâmetro `-P` conforme a porta USB da sua placa.
+
+## 💻 Exemplo de Código
+
+### Assembly (led.asm)
+
+```assembly
+; pisca LED no pino PB5 (Arduino Uno LED_BUILTIN)
+ldi r16, (1<<PB5)
+out DDRB, r16
+loop:
+    sbi PORTB, PB5    ; Liga LED
+    rcall delay
+    cbi PORTB, PB5    ; Desliga LED
+    rcall delay
+    rjmp loop
+
+delay:
+    ldi r18, 255
+del1:
+    ldi r19, 255
+del2:
+    dec r19
+    brne del2
+    dec r18
+    brne del1
+    ret
 ```
 
-### ⚙️ Controle Simples
+### C++ Equivalente (Para referência)
 
 ```cpp
-minhaBomba->swapState(true);  // Liga
-minhaBomba->analogPower(200); // 78% de potência
-```
-
-### ➕ Operadores
-
-```cpp
-*minhaBomba += 30;  // Aumenta potência
-*minhaBomba ^= 1;   // Alterna estado
-```
-
-## 📚 Exemplo Completo
-
-```cpp
-#include "HeaderWp.hpp"
-
-jobBomb* obj = new jobBomb(9, LOW);
-
 void setup() {
-  // Configurações iniciais
+  pinMode(LED_BUILTIN, OUTPUT);
 }
-
 void loop() {
-  obj->swapState();  // Alterna estado
-  delay(2000);       // Espera 2s
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(500);
+  digitalWrite(LED_BUILTIN, LOW);
+  delay(500);
 }
 ```
+
+## 📚 Estrutura do Projeto
+
+- `led.asm` — Código principal em Assembly
+- `led.cpp` — (Opcional) Versão em C++ para comparação
+- `README.md` — Documentação e instruções
 
 ## 🤝 Contribuição
 
 Contribuições são bem-vindas!
 
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/llsavelino/Library-waterPump-for-Arduino-Uno/pulls)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/llsavelino/asmAVR-ledToggle/pulls)
 
 1. Reporte bugs via Issues
-2. Envie Pull Requests com melhorias
-3. Compartilhe exemplos de uso
+2. Envie Pull Requests com melhorias ou exemplos
+3. Compartilhe experiências de uso
+
+---
+
+> “Piscar um LED nunca foi tão trabalhoso — e educativo!”
