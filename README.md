@@ -1,5 +1,4 @@
-
-<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&height=300&color=gradient&text=asmAVR-ledToggle&fontSize=45"/>
+<img width="100%" src="https://capsule-render.vercel.app/api?type=transparent&height=300&color=gradient&text=asmAVR-ledToggle&fontAlignY=45&descAlign=100&descAlignY=37"/>
 
 ![AVR](https://img.shields.io/badge/AVR-Assembly-6E4C13?style=flat&logo=gnu&logoColor=white)
 ![License](https://img.shields.io/github/license/llsavelino/asmAVR-ledToggle?color=blue)
